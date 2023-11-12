@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bilgi Formu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 50px;
+        }
+
+        #info-form {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div id="info-form">
+    <h2>Bilgi Formu</h2>
+    <form id="user-form">
+        <input type="text" id="firstName" placeholder="Adınız" required>
+        <input type="text" id="lastName" placeholder="Soyadınız" required>
+        <input type="email" id="email" placeholder="E-posta adresiniz" required>
+        <button type="button" onclick="submitForm()">Bilgileri Gönder</button>
+    </form>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
+
+<script>
+    // Firebase konfigürasyonu
+    var firebaseConfig = {
+        apiKey: "YOUR_API_KEY",
+        authDomain: "YOUR_AUTH_DOMAIN",
+        projectId: "YOUR_PROJECT_ID",
+        storageBucket: "YOUR_STORAGE_BUCKET",
+        messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+        appId: "YOUR_APP_ID"
+    };
+
+    // Firebase uygulamasını başlat
+    firebase.initializeApp(firebaseConfig);
+
+    // Firestore referansı oluştur
+    var db = firebase.firestore();
+
+    function submitForm() {
+        var firstName = document.getElementById("firstName").value;
+        var lastName = document.getElementById("lastName").value;
+        var email = document.getElementById("email").value;
+
+        // Firestore'a veri ekle
+        db.collection("users").add({
+            firstName: firstName,
+            lastName: lastName,
+            email: email
+        })
+        .then(function(docRef) {
+            console.log("Veri başarıyla eklendi. ID:", docRef.id);
+            alert("Bilgiler başarıyla gönderildi.");
+        })
+        .catch(function(error) {
+            console.error("Hata oluştu: ", error);
+            alert("Bir hata oluştu, lütfen tekrar deneyin.");
+        });
+    }
+    function submitForm() {
+    var firstName = document.getElementById("firstName").value;
+    var lastName = document.getElementById("lastName").value;
+    var email = document.getElementById("email").value;
+
+    // Bilgileri başka bir web sitesine gönderme
+    fetch('https://www.diğer-web-sitesi.com/api/veri', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            firstName: firstName,
+            lastName: lastName,
+            email: email
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Başka web sitesinden gelen cevap:', data);
+        alert('Bilgiler başarıyla başka web sitesine gönderildi.');
+    })
+    .catch(error => {
+        console.error('Hata oluştu:', error);
+        alert('Bir hata oluştu, lütfen tekrar deneyin.');
+    });
+}
+
+</script>
+
+</body>
+</html>
